@@ -37,7 +37,7 @@ NUM_CPUS="$(nproc)"
 PUBLISH_ROOT_VOLUME=""
 
 EXISTING_HOST=""
-IS_SLAVE=false
+IS_SECONDARY=false
 
 
 #-----------------------------------------------------------------
@@ -53,7 +53,7 @@ main_postinstall()
 
     fix_file_permissions
 
-    check_fusion_master_or_slave
+    check_fusion_primary_or_secondary
 
     install_or_upgrade_asset_root
 
@@ -95,20 +95,20 @@ compare_asset_root_publishvolume()
     fi
 }
 
-check_fusion_master_or_slave()
+check_fusion_primary_or_secondary()
 {
     if [ -f "$ASSET_ROOT/.config/volumes.xml" ]; then
         EXISTING_HOST=$(xml_file_get_xpath "$ASSET_ROOT/.config/volumes.xml" "//VolumeDefList/volumedefs/item[1]/host/text()" | $NEWLINECLEANER)
 
         case "$EXISTING_HOST" in
             $HOSTNAME_F|$HOSTNAME_A|$HOSTNAME_S|$HOSTNAME)
-                IS_SLAVE=false
+                IS_SECONDARY=false
                 ;;
             *)
-                IS_SLAVE=true
+                IS_SECONDARY=true
 
                 echo -e "\nThe asset root [$ASSET_ROOT] is owned by another Fusion host:  $EXISTING_HOST"
-                echo -e "Installing $GEEF $GEE_VERSION in Grid Slave mode.\n"
+                echo -e "Installing $GEEF $GEE_VERSION in Grid Secondary mode.\n"
                 ;;
         esac
     fi
@@ -144,10 +144,10 @@ install_or_upgrade_asset_root()
         "$BASEINSTALLDIR_OPT/bin/geconfigureassetroot" --new --noprompt \
             --assetroot "$ASSET_ROOT" --srcvol "$SOURCE_VOLUME"
     else
-        # Upgrade the asset root, if this is a Fusion master host.
-        #   Fusion slaves access the same files over NFS, and they rely on the
-        # master to keep proper confguration and file permissions.
-        if [ "$IS_SLAVE" = "false" ]; then
+        # Upgrade the asset root, if this is a Fusion primary host.
+        #   Fusion secondarys access the same files over NFS, and they rely on the
+        # primary to keep proper confguration and file permissions.
+        if [ "$IS_secondary" = "false" ]; then
             OWNERSHIP=`find "$ASSET_ROOT" -maxdepth 0 -printf "%g:%u"`
             if [ "$OWNERSHIP" != "$GEGROUP:$GEFUSIONUSER" ] ; then
                 UPGRADE_MESSAGE="WARNING: The installer detected the asset root may have incorrect permissions! \
@@ -169,7 +169,7 @@ END
                 printf "$UPGRADE_MESSAGE"
             fi
 
-            "$BASEINSTALLDIR_OPT/bin/geconfigureassetroot" --fixmasterhost \
+            "$BASEINSTALLDIR_OPT/bin/geconfigureassetroot" --fixprimaryhost \
                 --noprompt --assetroot $ASSET_ROOT
             # If `geconfigureassetroot` already updated ownership, don't do it again:
             "$BASEINSTALLDIR_OPT/bin/geupgradeassetroot" --noprompt \
@@ -180,8 +180,8 @@ END
 
 final_assetroot_configuration()
 {
-    if [ "$IS_SLAVE" = "true" ]; then
-        "$BASEINSTALLDIR_OPT/bin/geselectassetroot" --role slave --assetroot "$ASSET_ROOT"
+    if [ "$IS_secondary" = "true" ]; then
+        "$BASEINSTALLDIR_OPT/bin/geselectassetroot" --role secondary --assetroot "$ASSET_ROOT"
     else
         "$BASEINSTALLDIR_OPT/bin/geselectassetroot" --assetroot "$ASSET_ROOT"
          add_fusion_tutorial_volume

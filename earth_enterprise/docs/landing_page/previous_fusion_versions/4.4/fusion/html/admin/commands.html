@@ -101,7 +101,7 @@ one </td>
 </table>
 <h2><a id="63542"><b>geconfigureassetroot
 </b></a></h2>
-<pre><code><b><a><b>geconfigureassetroot</b> {<b>--new</b> <b>--assetroot </b><i>path </i>| <b>--repair</b> | <b>--editvolumes</b> | <b>--fixmasterhost</b> | <strong>--noprompt</strong>} [<b>--srcvol </b><i>path</i>]</a></b></code></pre>
+<pre><code><b><a><b>geconfigureassetroot</b> {<b>--new</b> <b>--assetroot </b><i>path </i>| <b>--repair</b> | <b>--editvolumes</b> | <b>--fixprimaryhost</b> | <strong>--noprompt</strong>} [<b>--srcvol </b><i>path</i>]</a></b></code></pre>
 <h4><b><a>Purpose
 </a></b></h4>
 <p><b><a>To add volume definitions or edit existing volume
@@ -142,7 +142,7 @@ to the selected
 asset root or, modify the <code>localpath</code> definition for an
 existing volume, or to add a volume definition.
 </a></b></p>
-<pre><code><b><a><b>--fixmasterhost</b></a></b></code></pre>
+<pre><code><b><a><b>--fixprimaryhost</b></a></b></code></pre>
 <p><b><a><i>Optional</i>. Change the <i>assetroot host</i>
 entry to match
 the current host name. (This command corrects cases where a host name
@@ -391,7 +391,7 @@ http://private.company.com.
 </a></b></p>
 <h2><b><a id="13019">geselectassetroot
 </a></b></h2>
-<pre><code><b><a><b>geselectassetroot</b> <b>[<b>--lock</b>] [--<strong>noprompt</strong>] [<b>--unlock</b>]<br />   ( [<b>--assetroot</b> <i>path</i> [<b>--role</b> {<b>master</b> | <b>slave</b>}] [<b>--numcpus</b> <i>num</i>]] )</b></a></b></code></pre>
+<pre><code><b><a><b>geselectassetroot</b> <b>[<b>--lock</b>] [--<strong>noprompt</strong>] [<b>--unlock</b>]<br />   ( [<b>--assetroot</b> <i>path</i> [<b>--role</b> {<b>primary</b> | <b>secondary</b>}] [<b>--numcpus</b> <i>num</i>]] )</b></a></b></code></pre>
 <h4><b><a><b>Purpose
 </b></a></b></h4>
 <p><b><a><b>To perform a variety of operations related to
@@ -405,7 +405,7 @@ You must also run this command as root.
 </b></a></b></p>
 <h4><b><a><b>Example
 </b></a></b></h4>
-<pre><code><b><a><b>geselectassetroot --lock<br />geselectassetroot --unlock<br />geselectassetroot --assetroot /gevol/assets<br />geselectassetroot --assetroot /gevol/assets --role slave --numcpus 3</b></a></b></code></pre>
+<pre><code><b><a><b>geselectassetroot --lock<br />geselectassetroot --unlock<br />geselectassetroot --assetroot /gevol/assets<br />geselectassetroot --assetroot /gevol/assets --role secondary --numcpus 3</b></a></b></code></pre>
 <h4><b><a><b>Commands
 </b></a></b></h4>
 <pre><code><b><a><b><b>--lock</b></b></a></b></code></pre>
@@ -427,10 +427,10 @@ root on this machine. (Use only if <code>--lock</code> is enabled.)
 root for this
 machine.
 </b></a></b></p>
-<pre><code><b><a><b><b>--role</b> {<b>master</b> | <b>slave</b>}</b></a></b></code></pre>
+<pre><code><b><a><b><b>--role</b> {<b>primary</b> | <b>secondary</b>}</b></a></b></code></pre>
 <p><b><a><b><i>Optional. </i>Specify this machine's role in
 the asset root
-(master or slave). The default role is master. This command is
+(primary or secondary). The default role is primary. This command is
 available only in combination with --<code>assetroot</code>.
 </b></a></b></p>
 <pre><code><b><a><b><b>--numcpus</b> <i>num</i></b></a></b></code></pre>

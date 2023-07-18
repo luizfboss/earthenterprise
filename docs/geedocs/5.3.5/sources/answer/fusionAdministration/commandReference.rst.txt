@@ -324,7 +324,7 @@ addvolume
 
  | -\-
 
-fixmasterhost
+fixprimaryhost
 
  | -\-
 
@@ -470,7 +470,7 @@ Optional
 
 -\-
 
-fixmasterhost
+fixprimaryhost
 
  [-\-assetroot
 
@@ -1511,11 +1511,11 @@ role
 
  {
 
-master
+primary
 
  |
 
-slave
+secondary
 
 }] [-\-
 
@@ -1615,7 +1615,7 @@ role
 
  {
 
-master
+primary
 
  |
 
@@ -1625,8 +1625,8 @@ slave
 
 Optional.
 
- Specify this machine's role in the asset root (master or slave). The
-default role is master. This command is available only in combination
+ Specify this machine's role in the asset root (primary or slave). The
+default role is primary. This command is available only in combination
 with "--assetroot".
 
 -\-

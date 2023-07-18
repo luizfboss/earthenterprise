@@ -51,7 +51,7 @@ PUBLISH_ROOT_VOLUME=""
 ASSET_ROOT_VOLUME_SIZE=0
 MIN_ASSET_ROOT_VOLUME_SIZE_IN_KB=1048576
 EXISTING_HOST=""
-IS_SLAVE=false
+IS_secondary=false
 NEW_GEFUSIONUSER=false
 NEW_GEGROUP=false
 INVALID_INDEX=255
@@ -187,7 +187,7 @@ main_postinstall()
 	chmod 755 $BININSTALLPROFILEDIR/ge-fusion.csh
 	chmod 755 $BININSTALLPROFILEDIR/ge-fusion.sh
 
-    check_fusion_master_or_slave
+    check_fusion_primary_or_secondary
 
 	if ! install_or_upgrade_asset_root; then
 		exit 1
@@ -757,20 +757,20 @@ check_asset_root_volume_size()
     return $check_asset_root_volume_size_retval
 }
 
-check_fusion_master_or_slave()
+check_fusion_primary_or_secondary()
 {
     if [ -f "$ASSET_ROOT/.config/volumes.xml" ]; then
 	EXISTING_HOST=$(xml_file_get_xpath "$ASSET_ROOT/.config/volumes.xml" "//VolumeDefList/volumedefs/item[1]/host/text()")
 	EXISTING_HOST=`echo "$EXISTING_HOST" | $NEWLINECLEANER`
         case "$EXISTING_HOST" in
 			$HOSTNAME_F|$HOSTNAME_A|$HOSTNAME_S|$HOSTNAME)
-                IS_SLAVE=false
+                IS_secondary=false
                 ;;
             *)
-                IS_SLAVE=true
+                IS_secondary=true
 
                 echo -e "\nThe asset root [$ASSET_ROOT] is owned by another Fusion host:  $EXISTING_HOST"
-                echo -e "Installing $GEEF $LONG_VERSION in Grid Slave mode.\n"
+                echo -e "Installing $GEEF $LONG_VERSION in Grid secondary mode.\n"
                 pause
                 ;;
         esac
@@ -808,10 +808,10 @@ install_or_upgrade_asset_root()
         "$BASEINSTALLDIR_OPT/bin/geconfigureassetroot" --new --noprompt \
             --assetroot "$ASSET_ROOT" --srcvol "$SOURCE_VOLUME"
     else
-        # Upgrade the asset root, if this is a Fusion master host.
-        #   Fusion slaves access the same files over NFS, and they rely on the
-        # master to keep proper confguration and file permissions.
-        if [ "$IS_SLAVE" = "false" ]; then
+        # Upgrade the asset root, if this is a Fusion primary host.
+        #   Fusion secondarys access the same files over NFS, and they rely on the
+        # primary to keep proper confguration and file permissions.
+        if [ "$IS_secondary" = "false" ]; then
             OWNERSHIP=`find "$ASSET_ROOT" -maxdepth 0 -printf "%g:%u"`
             if [ "$OWNERSHIP" != "$GROUPNAME:$GEFUSIONUSER_NAME" ] ; then
                 UPGRADE_MESSAGE="WARNING: The installer detected the asset root may have incorrect permissions! \
@@ -836,7 +836,7 @@ END
             if ! prompt_to_quit "X (Exit) the installer and backup your asset root - C (Continue) to upgrade the asset root."; then
                 install_or_upgrade_asset_root_retval=1
 			else
-            	$BASEINSTALLDIR_OPT/bin/geconfigureassetroot --fixmasterhost --noprompt --assetroot $ASSET_ROOT
+            	$BASEINSTALLDIR_OPT/bin/geconfigureassetroot --fixprimaryhost --noprompt --assetroot $ASSET_ROOT
             	$BASEINSTALLDIR_OPT/bin/geupgradeassetroot --noprompt --assetroot $ASSET_ROOT
             fi
         fi
@@ -894,8 +894,8 @@ fix_postinstall_filepermissions()
 
 final_assetroot_configuration()
 {
-    if [ $IS_SLAVE == true ]; then
-        $BASEINSTALLDIR_OPT/bin/geselectassetroot --role slave --assetroot $ASSET_ROOT
+    if [ $IS_secondary == true ]; then
+        $BASEINSTALLDIR_OPT/bin/geselectassetroot --role secondary --assetroot $ASSET_ROOT
     else
         $BASEINSTALLDIR_OPT/bin/geselectassetroot --assetroot $ASSET_ROOT
 
@@ -950,8 +950,8 @@ show_final_success_message()
     echo -e "need to install $GEES."
 
     if [ $START_FUSION_DAEMON == true ]; then
-        if [ -z "$SYSTEM_MGR_CHECK" ] && [ $IS_SLAVE == false ] || [ -z "$SYSTEM_RPROVIDER_CHECK" ]; then
-            # warning 1: fusion systemmanager is not running properly for fusion master (not relevant for slave installs)
+        if [ -z "$SYSTEM_MGR_CHECK" ] && [ $IS_secondary == false ] || [ -z "$SYSTEM_RPROVIDER_CHECK" ]; then
+            # warning 1: fusion systemmanager is not running properly for fusion primary (not relevant for secondary installs)
 			# OR warning 2: fusion system resource provider is not running
             echo -e "$GEEF daemon services are not running properly."
             echo -e "Please ensure that your asset root is selected using:"

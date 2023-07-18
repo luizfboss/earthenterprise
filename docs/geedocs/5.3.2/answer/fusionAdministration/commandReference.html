@@ -555,7 +555,7 @@ overlay terrain. resource_min_level is any integer between 4 and
 <p>Use <code class="docutils literal notranslate"><span class="pre">geserveradmin</span></code> to push and publish databases or use the
 Fusion GUI and <a class="reference internal" href="../geeServerAdmin/publishDatabasesPortables.html"><span class="doc">GEE Server</span></a>.</p>
 <p class="rubric">geselectassetroot</p>
-<p><strong>geselectassetroot</strong> [--<strong>lock</strong>] [--<strong>noprompt</strong>] [--<strong>unlock</strong>] ( [--<strong>assetroot</strong> <em>path</em> [--<strong>role</strong> {<strong>master</strong> | <strong>slave</strong>}] [--<strong>numcpus</strong> <em>num</em>]] )</p>
+<p><strong>geselectassetroot</strong> [--<strong>lock</strong>] [--<strong>noprompt</strong>] [--<strong>unlock</strong>] ( [--<strong>assetroot</strong> <em>path</em> [--<strong>role</strong> {<strong>master</strong> | <strong>secondary</strong>}] [--<strong>numcpus</strong> <em>num</em>]] )</p>
 <p class="rubric">Purpose</p>
 <p>To perform a variety of operations related to existing asset roots
 on the current machine.</p>
@@ -570,7 +570,7 @@ command as root.</p>
 geselectassetroot --lock
 geselectassetroot --unlock
 geselectassetroot --assetroot /gevol/assets
-geselectassetroot --assetroot /gevol/assets --role slave --numcpus 3
+geselectassetroot --assetroot /gevol/assets --role secondary --numcpus 3
 </pre></div>
 </div>
 <p class="rubric">Options</p>
@@ -597,9 +597,9 @@ specified on the command line.</p>
 on this machine. (Use only if <code class="docutils literal notranslate"><span class="pre">--lock</span></code> is enabled.)</p>
 <p>--<strong>assetroot</strong> <em>path</em></p>
 <p><em>Optional.</em> Specify the path to the asset root for this machine.</p>
-<p>--<strong>role</strong> {<strong>master</strong> | <strong>slave</strong>}</p>
+<p>--<strong>role</strong> {<strong>primary</strong> | <strong>secondary</strong>}</p>
 <p><em>Optional.</em> Specify this machine’s role in the asset root (master
-or slave). The default role is master. This command is available
+or secondary). The default role is master. This command is available
 only in combination with <code class="docutils literal notranslate"><span class="pre">--assetroot</span></code>.</p>
 <p>--<strong>numcpus</strong> <em>num</em></p>
 <p><em>Optional.</em> Specify the number of CPUs on this machine to use for

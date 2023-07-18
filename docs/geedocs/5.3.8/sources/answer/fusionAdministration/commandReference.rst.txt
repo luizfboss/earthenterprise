@@ -324,7 +324,7 @@ addvolume
 
  | -\-
 
-fixmasterhost
+fixprimaryhost
 
  | -\-
 
@@ -470,7 +470,7 @@ Optional
 
 -\-
 
-fixmasterhost
+fixprimaryhost
 
  [-\-assetroot
 
@@ -1523,11 +1523,11 @@ role
 
  {
 
-master
+primary
 
  |
 
-slave
+secondary
 
 }] [-\-
 
@@ -1553,7 +1553,7 @@ Tip: You must stop the system manager before using this command and
    geselectassetroot --lock
    geselectassetroot --unlock
    geselectassetroot --assetroot /gevol/assets
-   geselectassetroot --assetroot /gevol/assets --role slave --numcpus 3
+   geselectassetroot --assetroot /gevol/assets --role secondary --numcpus 3
 
 -[ Options ]-
 
@@ -1627,18 +1627,18 @@ role
 
  {
 
-master
+primary
 
  |
 
-slave
+secondary
 
 }
 
 Optional.
 
- Specify this machine's role in the asset root (master or slave). The
-default role is master. This command is available only in combination
+ Specify this machine's role in the asset root (primary or secondary). The
+default role is primary. This command is available only in combination
 with "--assetroot".
 
 -\-

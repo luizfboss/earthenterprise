@@ -98,7 +98,7 @@
   <code><b>--maxleveloverride </b><i>level</i></code></pre>
   <p><i>Optional</i>. Sets the maximum level for the imagery. Uses the imagery scale in Fusion. Matches the levels in the Fusion UI.</p>
  <h2><a name="63542"></a>geconfigureassetroot</h2>
-<code><b>geconfigureassetroot</b> {<b>--new</b> <b>--assetroot </b><i>path </i> [<b>--srcvol </b><i>path</i>] | <b>--repair</b> | <b>--editvolumes</b> | <b>--listvolumes</b> | <b>--addvolume</b> | <b>--fixmasterhost</b> | <strong>--noprompt</strong>}  [--nochown]</code></pre>
+<code><b>geconfigureassetroot</b> {<b>--new</b> <b>--assetroot </b><i>path </i> [<b>--srcvol </b><i>path</i>] | <b>--repair</b> | <b>--editvolumes</b> | <b>--listvolumes</b> | <b>--addvolume</b> | <b>--fixprimaryhost</b> | <strong>--noprompt</strong>}  [--nochown]</code></pre>
   <h3>Purpose</h3>
   <p>To add volume definitions or edit existing volume definitions.</p>
   <div class="tip">You must run this command as root. Except for the <b>--listvolumes</b> command, you must stop the fusion service before using this command and then start it again after you are done.</div>
@@ -138,7 +138,7 @@ geconfigureassetroot --editvolumes</code></pre>
 <code><b>--listvolumes</b> [--assetroot <i>path</i>]</code></pre>
 <p><i>Optional</i>. List the available (configured) volumes for the selected asset root.</p>
 <pre>
-<code><b>--fixmasterhost</b> [--assetroot <i>path</i>]</code></pre>
+<code><b>--fixprimaryhost</b> [--assetroot <i>path</i>]</code></pre>
 <p><i>Optional</i>. Change the <i>assetroot host</i> entry to match the current host name. (This command corrects cases where a host name is changed after installing and configuring Google Earth Enterprise Fusion.)</p>
 <pre>
 <code><b>--addvolume</b> <i>volume_name:path</i>]</code></pre>
@@ -288,7 +288,7 @@ instead.
 <h2><a name="13019"></a>geselectassetroot</h2>
 <pre>
 <code><b>geselectassetroot</b> [<b>--lock</b>] [--<strong>noprompt</strong>] [<b>--unlock</b>]
-( [<b>--assetroot</b> <i>path</i> [<b>--role</b> {<b>master</b> | <b>slave</b>}] [<b>--numcpus</b> <i>num</i>]] )</code></pre>
+( [<b>--assetroot</b> <i>path</i> [<b>--role</b> {<b>primary</b> | <b>secondary</b>}] [<b>--numcpus</b> <i>num</i>]] )</code></pre>
 <h3>Purpose</h3>
 <p>To perform a variety of operations related to existing asset roots on the current machine.</p>
 <div class="tip">You must stop the system manager before using this command and then start it again after you are done. You must also run this command as root.</div>
@@ -298,7 +298,7 @@ instead.
 geselectassetroot --lock
 geselectassetroot --unlock
 geselectassetroot --assetroot /gevol/assets
-geselectassetroot --assetroot /gevol/assets --role slave --numcpus 3</code></pre>
+geselectassetroot --assetroot /gevol/assets --role secondary --numcpus 3</code></pre>
 <h3>Options</h3>
 <pre>
 <code><b>--assetroot &lt;dir&gt;</b></code></pre>
@@ -323,8 +323,8 @@ geselectassetroot --assetroot /gevol/assets --role slave --numcpus 3</code></pre
 <code><b>--assetroot</b> <i>path</i></code></pre>
 <p><i>Optional. </i>Specify the path to the asset root for this machine.</p>
 <pre>
-<code><b>--role</b> {<b>master</b> | <b>slave</b>}</code></pre>
-<p><i>Optional. </i>Specify this machine's role in the asset root (master or slave). The default role is master. This command is available only in combination with --<code>assetroot</code>.</p>
+<code><b>--role</b> {<b>primary</b> | <b>secondary</b>}</code></pre>
+<p><i>Optional. </i>Specify this machine's role in the asset root (primary or secondary). The default role is primary. This command is available only in combination with --<code>assetroot</code>.</p>
 <pre>
 <code><b>--numcpus</b> <i>num</i></code></pre>
 <p><i>Optional. </i>Specify the number of CPUs on this machine to use for processing. The default will be the maximum number of CPUs detected on the machine during installation. This command is available only in combination with --<code>assetroot</code>.</p>

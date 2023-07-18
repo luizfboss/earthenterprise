@@ -546,15 +546,15 @@ message ClientOptionsProto {
   // A whitespace-separated list of globbing patterns (using the * and ?
   // wildcards) specifying URLs that are explicitly not allowed to open in the
   // internal browser in Earth 5.2 and later.
-  optional string internal_browser_blacklist = 12;
+  optional string internal_browser_denylist = 12;
 
   // A whitespace-separated list of globbing patterns (using the * and ?
   // wildcards) specifying URLs of origins for which KML content may open
-  // non-blacklisted links in the internal browser in Earth 5.2 and later.
+  // non-denylisted links in the internal browser in Earth 5.2 and later.
   // An "origin" refers to the path of the KML or KMZ file that contains the
   // feature description that has the link in it.  The origin of a streamed
   // layer is the URL at which it resides on its database server.
-  optional string internal_browser_origin_whitelist = 13 [default = "*"];
+  optional string internal_browser_origin_allowlist = 13 [default = "*"];
 
   // Indicates whether the database supports merged polar image tiles,
   // and if so at what zoom level the merging begins.  Values around 3
@@ -566,8 +566,8 @@ message ClientOptionsProto {
   // wildcards) specifying URLs of origins from which the JavaScript bridge
   // may make cross-domain requests on behalf of web content.  This should be
   // set to an empty string for Fusion dbroots, and only Google domains should
-  // be whitelisted for the consumer clients.
-  optional string js_bridge_request_whitelist = 15 [default = "http://*.google.com/*"];
+  // be allowlisted for the consumer clients.
+  optional string js_bridge_request_allowlist = 15 [default = "http://*.google.com/*"];
 
   // Message with Maps documents options.
   message MapsOptions {
@@ -1059,8 +1059,8 @@ message EndSnippetProto {
   // gray (non-photorealistic) buildings.
   optional uint32 diorama_default_color = 29 [default = 0xffc7c2c7];
 
-  // URL used to fetch Diorama blacklist (ID's of buildings to hide).
-  optional StringIdOrValueProto diorama_blacklist_url = 53;
+  // URL used to fetch Diorama denylist (ID's of buildings to hide).
+  optional StringIdOrValueProto diorama_denylist_url = 53;
 
   // Client-side features that should be altered for this database.
   optional ClientOptionsProto client_options = 30;

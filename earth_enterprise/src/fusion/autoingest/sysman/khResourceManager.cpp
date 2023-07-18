@@ -962,7 +962,7 @@ khResourceManager::ReloadConfig(void)
   //   - what happens if a volume is removed?
   //   - what happens if a localpath changes?
   //   - what heppens to existing reservations in the above two cases?
-  //   - how do I send new volume information to slave providers so they
+  //   - how do I send new volume information to secondary providers so they
   //         can know what to check for free space?
 
   TaskRequirements::LoadFromFiles();

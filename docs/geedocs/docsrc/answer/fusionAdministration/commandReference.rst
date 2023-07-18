@@ -141,7 +141,7 @@ Command reference
       .. _geconfigassetroot:
       .. rubric:: geconfigureassetroot
 
-      **geconfigureassetroot** {-\\-**new** -\\-**assetroot path**  [-\\-**srcvol** *path*] | -\\-**repair** | -\\-**editvolumes** | -\\-**listvolumes** | -\\-**addvolume** | -\\-**fixmasterhost** | -\\-**noprompt**}  [-\\-*chown*]
+      **geconfigureassetroot** {-\\-**new** -\\-**assetroot path**  [-\\-**srcvol** *path*] | -\\-**repair** | -\\-**editvolumes** | -\\-**listvolumes** | -\\-**addvolume** | -\\-**fixprimaryhost** | -\\-**noprompt**}  [-\\-*chown*]
 
       .. rubric:: Purpose
 
@@ -222,7 +222,7 @@ Command reference
       *Optional*. List the available (configured) volumes for the
       selected asset root.
 
-      -\\-**fixmasterhost** [-\\-assetroot *path*]
+      -\\-**fixprimaryhost** [-\\-assetroot *path*]
 
       *Optional*. Change the *assetroot host* entry to match the current
       host name. (This command corrects cases where a host name is
@@ -744,7 +744,7 @@ Command reference
 
       .. rubric:: geselectassetroot
 
-      **geselectassetroot** [-\\-**lock**] [-\\-**noprompt**] [-\\-**unlock**] ( [-\\-**assetroot** *path* [-\\-**role** {**master** | **slave**}] [-\\-**numcpus** *num*]] )
+      **geselectassetroot** [-\\-**lock**] [-\\-**noprompt**] [-\\-**unlock**] ( [-\\-**assetroot** *path* [-\\-**role** {**primary** | **secondary**}] [-\\-**numcpus** *num*]] )
 
       .. rubric:: Purpose
 
@@ -765,7 +765,7 @@ Command reference
          geselectassetroot --lock
          geselectassetroot --unlock
          geselectassetroot --assetroot /gevol/assets
-         geselectassetroot --assetroot /gevol/assets --role slave --numcpus 3
+         geselectassetroot --assetroot /gevol/assets --role secondary --numcpus 3
 
       .. rubric:: Options
 
@@ -807,10 +807,10 @@ Command reference
 
       *Optional.* Specify the path to the asset root for this machine.
 
-      -\\-**role** {**master** | **slave**}
+      -\\-**role** {**primary** | **secondary**}
 
-      *Optional.* Specify this machine's role in the asset root (master
-      or slave). The default role is master. This command is available
+      *Optional.* Specify this machine's role in the asset root (primary
+      or secondary). The default role is primary. This command is available
       only in combination with ``--assetroot``.
 
       -\\-**numcpus** *num*
